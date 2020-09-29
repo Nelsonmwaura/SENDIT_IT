@@ -1,6 +1,6 @@
 package dao;
 import models.*;
-import java.util.ArrayList;
+
 import java.util.List;
 import org.sql2o.Sql2o;
 import org.sql2o.Connection;
@@ -59,7 +59,7 @@ public class Sql2oDestinationDao implements DestinationDao {
     }
 
     @Override
-    public void deleteById(int id){
+    public Destination deleteById(int id){
         String sql = "DELETE from destinations WHERE id = :id"; //raw sql
         try(Connection con = sql2o.open()){
             con.createQuery(sql)
@@ -68,6 +68,7 @@ public class Sql2oDestinationDao implements DestinationDao {
         }catch (Sql2oException ex){
             System.out.println(ex);
         }
+        return null;
     }
 
     @Override

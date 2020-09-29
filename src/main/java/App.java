@@ -36,5 +36,74 @@ public class App {
         conn = sql2o.open();
 
 
+        get("/", "application/json", (req, res) ->
+                "{\"message\":\"Welcome to the main page of SendIT API.\"}");
+
+        //Destinations
+        //postman posts new Destination object (Json Format)
+        post("/destination/new", "application/json", (req, res)->{
+            Destination newDestination = gson.fromJson(req.body(), Destination.class);
+            destinationsDao.add(newDestination);
+            res.status(201);
+            return gson.toJson(newDestination);
+        });
+
+        //postman gets List of Destination objects
+        get("/destinations", "application/json", (req, res) -> {
+            System.out.println(destinationsDao.getAll());
+
+            if(destinationsDao.getAll().size() > 0) {
+                return gson.toJson(destinationsDao.getAll());
+            }
+            else{
+                return "{\"message\":\"I'm sorry, but no destinations items are currently listed in the database.\"}";
+            }
+        });
+
+        //postman gets Destination objects by their id (Json format)
+        get("/destination/:id", "application/json", (req, res) -> { //accept a request in format JSON from an app
+            int destinationId = Integer.parseInt(req.params("id"));
+            Destination destinationToFind = destinationsDao.findById(destinationId);
+//            if (destinationToFind == null){
+                try {
+                    if (destinationToFind == null) {
+                        throw new ApiException(404, String.format("No destination item with the id: \"%s\" exists", req.params("id")));
+                    }
+                }catch (ApiException ex){
+                    System.out.println(ex);
+                };
+                if(destinationToFind == null){
+                  return "{\"message\":\"I'm sorry, but no destinations items are currently listed in the database.\"}";
+                }else{
+                return gson.toJson(destinationToFind);
+                }
+        });
+
+        //postman deletes Destination objects by their id (Json format)
+        get("/destination/:id/delete", "application/json", (req, res) -> { //accept a request in format JSON from an app
+            int destinationId = Integer.parseInt(req.params("id"));
+            Destination destinationToFind = destinationsDao.deleteById(destinationId);
+//            if (destinationToFind == null){
+            try {
+                if (destinationToFind == null) {
+                    throw new ApiException(404, String.format("No destination item with the id: \"%s\" exists", req.params("id")));
+                }
+            }catch (ApiException ex){
+                System.out.println(ex);
+            };
+//            if(destinationToFind == null){
+//                return "{\"message\":\"Deleted\"}";
+//            }else{
+            res.status(201);
+            res.redirect("/destinations");
+                return gson.toJson(destinationToFind);
+//            return null;
+//            }
+
+        });
+
+
+
+
     }
 }

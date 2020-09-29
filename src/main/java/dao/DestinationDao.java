@@ -17,7 +17,7 @@ public interface DestinationDao {
     void update(int id, String destinationName, String nearestStage);
 
     //delete
-    void deleteById(int id);
+    Destination deleteById(int id);
     void clearAll();
 
 
