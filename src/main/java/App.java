@@ -53,9 +53,11 @@ public class App {
             System.out.println(destinationsDao.getAll());
 
             if(destinationsDao.getAll().size() > 0) {
+//                res.status(201);
                 return gson.toJson(destinationsDao.getAll());
             }
             else{
+//                res.status(101);
                 return "{\"message\":\"I'm sorry, but no destinations items are currently listed in the database.\"}";
             }
         });
@@ -64,17 +66,18 @@ public class App {
         get("/destination/:id", "application/json", (req, res) -> { //accept a request in format JSON from an app
             int destinationId = Integer.parseInt(req.params("id"));
             Destination destinationToFind = destinationsDao.findById(destinationId);
-//            if (destinationToFind == null){
                 try {
                     if (destinationToFind == null) {
                         throw new ApiException(404, String.format("No destination item with the id: \"%s\" exists", req.params("id")));
                     }
                 }catch (ApiException ex){
                     System.out.println(ex);
-                };
+                }
                 if(destinationToFind == null){
+//                    res.status(101);
                   return "{\"message\":\"I'm sorry, but no destinations items are currently listed in the database.\"}";
                 }else{
+//                    res.status(201);
                 return gson.toJson(destinationToFind);
                 }
         });
@@ -83,26 +86,19 @@ public class App {
         get("/destination/:id/delete", "application/json", (req, res) -> { //accept a request in format JSON from an app
             int destinationId = Integer.parseInt(req.params("id"));
             Destination destinationToFind = destinationsDao.deleteById(destinationId);
-//            if (destinationToFind == null){
+
             try {
                 if (destinationToFind == null) {
                     throw new ApiException(404, String.format("No destination item with the id: \"%s\" exists", req.params("id")));
                 }
             }catch (ApiException ex){
                 System.out.println(ex);
-            };
-//            if(destinationToFind == null){
-//                return "{\"message\":\"Deleted\"}";
-//            }else{
-            res.status(201);
+            }
+
+            res.status(300);
             res.redirect("/destinations");
-                return gson.toJson(destinationToFind);
-//            return null;
-//            }
-
+            return gson.toJson(destinationToFind);
         });
-
-
 
 
     }
