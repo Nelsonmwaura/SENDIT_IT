@@ -53,11 +53,11 @@ public class App {
             System.out.println(destinationsDao.getAll());
 
             if(destinationsDao.getAll().size() > 0) {
-//                res.status(201);
+//                res.status(200);
                 return gson.toJson(destinationsDao.getAll());
             }
             else{
-//                res.status(101);
+//                res.status(100);
                 return "{\"message\":\"I'm sorry, but no destinations items are currently listed in the database.\"}";
             }
         });
@@ -74,7 +74,7 @@ public class App {
                     System.out.println(ex);
                 }
                 if(destinationToFind == null){
-//                    res.status(101);
+//                    res.status(100);
                   return "{\"message\":\"I'm sorry, but no destinations items are currently listed in the database.\"}";
                 }else{
 //                    res.status(201);
@@ -98,6 +98,23 @@ public class App {
             res.status(300);
             res.redirect("/destinations");
             return gson.toJson(destinationToFind);
+        });
+
+
+        //FILTERS
+        exception(ApiException.class, (exception, req, res) -> {
+            ApiException err = exception;
+            Map<String, Object> jsonMap = new HashMap<>();
+            jsonMap.put("status", err.getStatusCode());
+            jsonMap.put("errorMessage", err.getMessage());
+            res.type("application/json");
+            res.status(err.getStatusCode());
+            res.body(gson.toJson(jsonMap));
+        });
+
+
+        after((req, res) ->{
+            res.type("application/json");
         });
 
 
