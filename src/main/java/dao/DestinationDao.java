@@ -7,6 +7,7 @@ import java.util.List;
 public interface DestinationDao {
 
     //create
+    void add(Destination destinations);
 
     //read
     List<Destination> getAll();
