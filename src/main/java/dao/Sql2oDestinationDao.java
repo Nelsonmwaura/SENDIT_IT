@@ -46,7 +46,7 @@ public class Sql2oDestinationDao implements DestinationDao {
 
     @Override
     public void update(int id, String destinationName, String nearestStage){
-        String sql = "UPDATE users SET (destinationName, nearestStage) = (:destinationName, :nearestStage) WHERE id=:id"; //CHECK!!!
+        String sql = "UPDATE destinations SET (destinationName, nearestStage) = (:destinationName, :nearestStage) WHERE id=:id"; //CHECK!!!
         try (Connection con = sql2o.open()) {
             con.createQuery(sql)
                     .addParameter("destinationName", destinationName)
@@ -59,8 +59,8 @@ public class Sql2oDestinationDao implements DestinationDao {
     }
 
     @Override
-    public void deleteById(int id, String destinationName, String nearestStage){
-        String sql = "DELETE from departments WHERE id = :id"; //raw sql
+    public void deleteById(int id){
+        String sql = "DELETE from destinations WHERE id = :id"; //raw sql
         try(Connection con = sql2o.open()){
             con.createQuery(sql)
                     .addParameter("id", id)
@@ -72,7 +72,7 @@ public class Sql2oDestinationDao implements DestinationDao {
 
     @Override
     public void clearAll(){
-        String sql = "DELETE FROM departments";
+        String sql = "DELETE FROM destinations";
         try(Connection con = sql2o.open()){
             con.createQuery(sql).executeUpdate();
         }catch (Sql2oException ex) {
