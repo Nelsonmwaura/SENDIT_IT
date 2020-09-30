@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
-
 import static org.junit.Assert.*;
 
 
@@ -32,6 +31,7 @@ public class Sql2oDestinationDaoTest {
         destinationDao.add(destination);
         return destination;
     }
+
     //helper
     public Destination setUpAltDestination(){
         Destination destinationTwo = new Destination("Pipeline","Stage Mpya");
@@ -70,7 +70,7 @@ public class Sql2oDestinationDaoTest {
     }
 
     @Test
-    public void DestinationupdatesCorrectly(){
+    public void DestinationUpdatesCorrectly(){
         Destination one = setUpDestination();
         destinationDao.update(one.getId(),"Fedha","Taj");
         Destination changed = destinationDao.findById(one.getId());
@@ -94,5 +94,6 @@ public class Sql2oDestinationDaoTest {
         destinationDao.clearAll();
         assertEquals(0, destinationDao.getAll().size());
     }
+
 
 }
