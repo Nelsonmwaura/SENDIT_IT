@@ -17,6 +17,7 @@ public interface UsersDao {
 //    update
 
 //    delete
+    public Users deleteById(int id);
     void clearAll();
 
 }

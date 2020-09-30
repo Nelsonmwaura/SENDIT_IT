@@ -52,14 +52,26 @@ public List<Users> getAll () throws SQLException {
 @Override
 public Users findById (int id) throws SQLException {
     	try (org.sql2o.Connection con=sql2o.open()){
-            String sql=("SELECT * FROM staff WHERE id=:id");
+            String sql=("SELECT * FROM users WHERE id=:id");
             return con.createQuery(sql)
                     .addParameter("id",id)
                     .executeAndFetchFirst(Users.class);
-        
-			
 		}
 	}
+	
+	@Override
+	public Users deleteById(int id){
+    String sql = "DELETE from users WHERE id = :id"; //raw sql
+    try(Connection con = sql2o.open()){
+        con.createQuery(sql)
+                .addParameter("id", id)
+                .executeUpdate();
+    }catch (Sql2oException ex){
+        System.out.println(ex);
+    }
+    return null;
+}
+	
 		@Override
 		public void clearAll() {
 			
